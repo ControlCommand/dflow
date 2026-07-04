@@ -3,7 +3,7 @@ Event Bus for DFlow - Simple pub/sub system for observability.
 RFC-0006: Event System
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from db.connection import get_connection
 import json
 
@@ -21,6 +21,11 @@ EVENT_TYPES = [
     "INGEST_STARTED",
     "INGEST_COMPLETED"
 ]
+
+
+def now():
+    """Return current UTC timestamp in ISO format."""
+    return datetime.now(timezone.utc).isoformat()
 
 
 def subscribe(event_type, callback):
@@ -45,7 +50,7 @@ def emit(event_type, payload=None):
     if event_type not in EVENT_TYPES:
         print(f"[WARN] Unknown event type: {event_type}")
     
-    timestamp = datetime.utcnow().isoformat()
+    timestamp = now()
     
     # Log to database
     _log_event_to_db(event_type, payload, timestamp)

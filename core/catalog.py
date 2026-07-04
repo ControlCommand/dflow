@@ -1,11 +1,12 @@
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from db.connection import get_connection
 from core.state import is_valid_transition, VALID_STATES, TRANSITIONS
 
 def now():
-    return datetime.utcnow().isoformat()
+    """Return current UTC timestamp in ISO format."""
+    return datetime.now(timezone.utc).isoformat()
 
 
 def create_do(path, state="INGRESS", lineage=None, do_type="GENERIC", metadata=None):
