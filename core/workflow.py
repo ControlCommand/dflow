@@ -1,4 +1,4 @@
-from core.registry import create_do, append_lineage, update_state, get_do
+from core.catalog import create_do, append_lineage, update_state, get_do
 from core.pipeline import execute_pipeline
 from core.state import is_valid_transition, get_allowed_transitions
 from events.bus import emit
