@@ -3,19 +3,23 @@
 
 VALID_STATES = [
     "INGRESS",
+    "VALIDATED",
     "ACTIVE",
     "SCRATCH",
     "CURATED",
-    "ARCHIVE"
+    "ARCHIVED",
+    "REJECTED"
 ]
 
-# Valid state transitions
+# Valid state transitions (strictly enforced)
 TRANSITIONS = {
-    "INGRESS": ["ACTIVE", "SCRATCH"],
-    "ACTIVE": ["CURATED", "ARCHIVE"],
-    "SCRATCH": ["ACTIVE", "ARCHIVE"],
-    "CURATED": ["ARCHIVE", "ACTIVE"],
-    "ARCHIVE": []  # Terminal state
+    "INGRESS": ["VALIDATED"],
+    "VALIDATED": ["ACTIVE", "REJECTED"],
+    "ACTIVE": ["CURATED", "SCRATCH"],
+    "SCRATCH": ["ACTIVE", "REJECTED"],
+    "CURATED": ["ARCHIVED", "ACTIVE"],
+    "ARCHIVED": [],  # Terminal state
+    "REJECTED": []   # Terminal state
 }
 
 def transition(action):
@@ -34,3 +38,7 @@ def is_valid_transition(from_state, to_state):
     if from_state not in TRANSITIONS:
         return False
     return to_state in TRANSITIONS[from_state]
+
+def get_allowed_transitions(state):
+    """Get list of allowed next states for a given state."""
+    return TRANSITIONS.get(state, [])
