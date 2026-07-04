@@ -15,3 +15,8 @@ CREATE TABLE IF NOT EXISTS events (
     event TEXT,
     timestamp TEXT
 );
+
+-- Indexes for query performance (RFC-0008)
+CREATE INDEX IF NOT EXISTS idx_state ON do_registry(state);
+CREATE INDEX IF NOT EXISTS idx_path ON do_registry(path);
+CREATE INDEX IF NOT EXISTS idx_created ON do_registry(created_at);
